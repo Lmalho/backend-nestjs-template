@@ -5,7 +5,7 @@ import { Job } from 'bull';
 import { JobStatus } from 'src/jobs/types/job.types';
 
 @Processor(Queues.JOB)
-export class JobsProcessor {
+export class JobsProcessorService {
   constructor(private readonly jobsService: JobsService) {}
 
   @Process()
