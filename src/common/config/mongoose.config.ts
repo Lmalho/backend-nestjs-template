@@ -1,11 +1,17 @@
 import { MongooseModuleOptions } from '@nestjs/mongoose';
 import { registerAs } from '@nestjs/config';
 
-export default registerAs<MongooseModuleOptions>('mongoose', () => {
-  const { MONGO_URI } = process.env;
+export const MongooseConfigKey = 'mongoose';
+export const MongooseConfig = registerAs<MongooseModuleOptions>(
+  MongooseConfigKey,
+  (): MongooseModuleOptions => {
+    const { MONGO_URI } = process.env;
 
-  return {
-    uri: MONGO_URI,
-    retryAttempts: 5,
-  };
-});
+    const options: MongooseModuleOptions = {
+      uri: MONGO_URI,
+      ignoreUndefined: true,
+      retryAttempts: 5,
+    };
+    return options;
+  },
+);
