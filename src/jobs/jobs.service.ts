@@ -7,11 +7,13 @@ import { JobTimes, JobPayload, Queues } from 'src/common/types/queues';
 import { Queue } from 'bull';
 import { Model } from 'mongoose';
 import { Job } from './schemas/job.schema';
+import { InjectModel } from '@nestjs/mongoose';
 import { ResponseFindAllJobDto } from './dto/response-job.dto';
 
 @Injectable()
 export class JobsService {
   constructor(
+    @InjectModel(Job.name)
     private jobsModel: Model<Job>,
     @InjectQueue(Queues.JOB)
     private exportJobQueue: Queue<JobPayload>,
