@@ -20,7 +20,7 @@ export class CreateJobDto {
   @ApiProperty({
     enumName: 'JobType',
     enum: Object.values(JobType),
-    description: 'File type of the export job',
+    description: 'File type of the job',
     example: JobType[0],
     required: true,
     nullable: false,

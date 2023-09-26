@@ -19,14 +19,14 @@ export class JobsService {
     @InjectModel(Job.name)
     private jobsModel: Model<Job>,
     @InjectQueue(Queues.JOB)
-    private exportJobQueue: Queue<JobPayload>,
+    private jobQueue: Queue<JobPayload>,
   ) {}
 
   async create(jobDto: CreateJobDto) {
     const job = await new this.jobsModel(jobDto).save();
 
     const payload: JobPayload = { jobId: job._id.toString() };
-    await this.exportJobQueue.add(payload.jobId, payload, {
+    await this.jobQueue.add(payload.jobId, payload, {
       delay: JobTimes[job.type],
     });
 

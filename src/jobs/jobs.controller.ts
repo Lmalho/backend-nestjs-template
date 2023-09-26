@@ -3,9 +3,8 @@ import { JobsService } from './jobs.service';
 import { CreateJobDto } from './dto/create-job.dto';
 import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ResponseJobDto, ResponseFindAllJobDto } from './dto/response-job.dto';
-import { get } from 'http';
 
-@ApiTags('Exports')
+@ApiTags('Jobs')
 @Controller()
 export class JobsController {
   constructor(private readonly jobsService: JobsService) {}

@@ -6,9 +6,8 @@ import { Logger } from 'nestjs-pino';
 
 export const OpenApiOptions = {
   info: {
-    title: 'Reedsy Challenge API',
-    description:
-      'The Reedsy Challenge API can be used to create import and export jobs',
+    title: 'NestJs Template API',
+    description: 'This template API can be used to create jobs',
     version: '0.0.0-development',
   },
 };
