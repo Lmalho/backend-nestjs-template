@@ -1,7 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, Logger as NestLogger } from '@nestjs/common';
+import { Logger } from 'nestjs-pino';
 
 export const OpenApiOptions = {
   info: {
@@ -27,6 +28,8 @@ async function bootstrapHttpServer() {
     },
   });
 
+  app.useLogger(app.get(Logger));
+
   const { title, description, version } = OpenApiOptions.info;
 
   SwaggerModule.setup(
@@ -42,7 +45,8 @@ async function bootstrapHttpServer() {
     ),
   );
 
-  console.log(`App listening at port ${process.env.API_PORT}`);
+  const logger = new NestLogger('bootstrapHttpServer');
+  logger.log(`App listening at http://0.0.0.0:${process.env.API_PORT}`);
 
   await app.listen(process.env.API_PORT);
 }
