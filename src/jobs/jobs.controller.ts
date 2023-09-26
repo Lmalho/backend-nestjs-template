@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { JobsService } from './jobs.service';
 import { CreateJobDto } from './dto/create-job.dto';
 import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ResponseJobDto, ResponseFindAllJobDto } from './dto/response-job.dto';
+import { get } from 'http';
 
 @ApiTags('Exports')
 @Controller()
@@ -10,15 +11,15 @@ export class JobsController {
   constructor(private readonly jobsService: JobsService) {}
 
   @ApiOperation({
-    summary: 'Create an export job',
-    description: 'Creates an import job',
+    summary: 'Create a job',
+    description: 'Creates a job',
   })
   @ApiCreatedResponse({
     description: 'The record has been successfully created.',
     type: ResponseJobDto,
   })
   @Post()
-  createExport(@Body() createJobDto: CreateJobDto) {
+  createJob(@Body() createJobDto: CreateJobDto) {
     return this.jobsService.create(createJobDto);
   }
 
@@ -31,7 +32,20 @@ export class JobsController {
     type: ResponseFindAllJobDto,
   })
   @Get()
-  findAllExports() {
+  findAllJobs() {
     return this.jobsService.findAll();
+  }
+
+  @ApiOperation({
+    summary: 'Get a job',
+    description: 'Gets a job by id',
+  })
+  @ApiCreatedResponse({
+    description: 'Gets a job by id',
+    type: ResponseJobDto,
+  })
+  @Get(':jobId')
+  findOneJob(@Param('jobId') jobId: string) {
+    return this.jobsService.findOne(jobId);
   }
 }

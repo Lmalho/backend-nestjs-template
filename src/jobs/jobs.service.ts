@@ -12,6 +12,9 @@ import { ResponseFindAllJobDto } from './dto/response-job.dto';
 
 @Injectable()
 export class JobsService {
+  findOne(jobId: string) {
+    return this.jobsModel.findOne({ _id: jobId });
+  }
   constructor(
     @InjectModel(Job.name)
     private jobsModel: Model<Job>,

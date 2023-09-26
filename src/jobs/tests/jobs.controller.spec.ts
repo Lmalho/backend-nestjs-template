@@ -41,7 +41,7 @@ describe('JobsController', () => {
 
       jest.spyOn(service, 'create').mockReturnValueOnce(Promise.resolve(job));
 
-      expect(controller.createExport(mock)).resolves.toEqual(job);
+      expect(controller.createJob(mock)).resolves.toEqual(job);
       expect(service.create).toHaveBeenCalledWith(mock);
     });
   });
@@ -60,7 +60,7 @@ describe('JobsController', () => {
         .spyOn(service, 'findAll')
         .mockReturnValueOnce(Promise.resolve(jobList));
 
-      const response = await controller.findAllExports();
+      const response = await controller.findAllJobs();
       expect(response.data).toHaveLength(1);
       expect(response.data[0].jobs).toHaveLength(2);
       expect(service.findAll).toHaveBeenCalled();
