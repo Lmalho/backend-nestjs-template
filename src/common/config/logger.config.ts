@@ -9,7 +9,7 @@ export const LoggerConfig = registerAs<Params>(LoggerConfigKey, (): Params => {
     process.env;
 
   // standard logger params
-  // should delete headers from Logs in production with a serializer
+  // later should delete headers and other important info from Logs in production with a serializer
   const loggerParams: Params = {
     pinoHttp: {
       level: LOG_LEVEL || 'info',
