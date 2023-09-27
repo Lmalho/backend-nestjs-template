@@ -9,9 +9,12 @@ import { Model } from 'mongoose';
 import { Job } from './schemas/job.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { ResponseFindAllJobDto } from './dto/response-job.dto';
+import { ThrowNotFoundIfNull } from 'src/common/decorators/throw-not-found-if-null.decorator';
+import { ErrorCodes } from 'src/common/errors/codes.error';
 
 @Injectable()
 export class JobsService {
+  @ThrowNotFoundIfNull(ErrorCodes.JOB_NOT_FOUND)
   findOne(jobId: string) {
     return this.jobsModel.findOne({ _id: jobId });
   }
