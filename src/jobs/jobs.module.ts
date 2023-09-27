@@ -3,7 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { JobsService } from './jobs.service';
 import { JobsController } from './jobs.controller';
 
-import { BullModule } from '@nestjs/bull';
+import { BullModule } from '@nestjs/bullmq';
 import { Queues } from 'src/common/types/queues';
 import { JobsProcessorService } from './processor/jobs.processor.service';
 import { JobModelFactory } from './schemas/job.model.factory';

@@ -1502,17 +1502,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/bull@npm:^10.0.1":
+"@nestjs/bullmq@npm:^10.0.1":
   version: 10.0.1
-  resolution: "@nestjs/bull@npm:10.0.1"
+  resolution: "@nestjs/bullmq@npm:10.0.1"
   dependencies:
     "@nestjs/bull-shared": ^10.0.1
     tslib: 2.6.0
   peerDependencies:
     "@nestjs/common": ^8.0.0 || ^9.0.0 || ^10.0.0
     "@nestjs/core": ^8.0.0 || ^9.0.0 || ^10.0.0
-    bull: ^3.3 || ^4.0.0
-  checksum: 928f723977de2c8d7a9e5698583218eba1bbea3c296afbc906fb07a2033152f8906669c253a46799896bdd44db0196648fed1d5983c3aed90c76a2c408ed8c5c
+    bullmq: ^3.0.0 || ^4.0.0
+  checksum: c36ce76c9de74e8a99c2c7987aabad18ae3d01769b71ee9bd47f2ef212d544912e5d0aaf17550233676d3072759ffc7e150b2f9f6222b069c718e5c5db242efd
   languageName: node
   linkType: hard
 
@@ -3264,7 +3264,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "backend-nestjs-template@workspace:."
   dependencies:
-    "@nestjs/bull": ^10.0.1
+    "@nestjs/bullmq": ^10.0.1
     "@nestjs/cli": ^10.0.0
     "@nestjs/common": ^10.0.5
     "@nestjs/config": ^3.0.0
@@ -3282,7 +3282,7 @@ __metadata:
     "@types/supertest": ^2.0.12
     "@typescript-eslint/eslint-plugin": ^5.59.11
     "@typescript-eslint/parser": ^5.59.11
-    bull: ^4.10.4
+    bullmq: ^4.11.4
     class-transformer: ^0.5.1
     class-validator: ^0.14.0
     eslint: ^8.42.0
@@ -3498,18 +3498,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bull@npm:^4.10.4":
-  version: 4.11.3
-  resolution: "bull@npm:4.11.3"
+"bullmq@npm:^4.11.4":
+  version: 4.11.4
+  resolution: "bullmq@npm:4.11.4"
   dependencies:
-    cron-parser: ^4.2.1
-    get-port: ^5.1.1
+    cron-parser: ^4.6.0
+    glob: ^8.0.3
     ioredis: ^5.3.2
     lodash: ^4.17.21
-    msgpackr: ^1.5.2
-    semver: ^7.5.2
-    uuid: ^8.3.0
-  checksum: ed634c7f1fb3aae404a4e9f113f3cb35ff97c74ac0da49396766c70bfade2976058bcd34c1a52a1529c3a17dc9e9fcfb49c592605ce714ab18ce3bc5144855cf
+    msgpackr: ^1.6.2
+    node-abort-controller: ^3.1.1
+    semver: ^7.5.4
+    tslib: ^2.0.0
+    uuid: ^9.0.0
+  checksum: 71c2a7e37c0a1003c81f3e3bed461778b841b3ce000601e6427cacd6da65c7ac936d5f42d37c86099c1f6534ffc7773d6ffdf3e23a927c3e427a4f5f4a53428f
   languageName: node
   linkType: hard
 
@@ -4005,7 +4007,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cron-parser@npm:^4.2.1":
+"cron-parser@npm:^4.6.0":
   version: 4.9.0
   resolution: "cron-parser@npm:4.9.0"
   dependencies:
@@ -5100,7 +5102,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob@npm:^8.0.0":
+"glob@npm:^8.0.0, glob@npm:^8.0.3":
   version: 8.1.0
   resolution: "glob@npm:8.1.0"
   dependencies:
@@ -6966,7 +6968,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"msgpackr@npm:^1.5.2":
+"msgpackr@npm:^1.6.2":
   version: 1.9.9
   resolution: "msgpackr@npm:1.9.9"
   dependencies:
@@ -7047,7 +7049,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-abort-controller@npm:^3.0.1":
+"node-abort-controller@npm:^3.0.1, node-abort-controller@npm:^3.1.1":
   version: 3.1.1
   resolution: "node-abort-controller@npm:3.1.1"
   checksum: 2c340916af9710328b11c0828223fc65ba320e0d082214a211311bf64c2891028e42ef276b9799188c4ada9e6e1c54cf7a0b7c05dd9d59fcdc8cd633304c8047
@@ -7995,7 +7997,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:^7.3.4, semver@npm:^7.3.5, semver@npm:^7.3.7, semver@npm:^7.3.8, semver@npm:^7.5.2, semver@npm:^7.5.3, semver@npm:^7.5.4":
+"semver@npm:^7.3.4, semver@npm:^7.3.5, semver@npm:^7.3.7, semver@npm:^7.3.8, semver@npm:^7.5.3, semver@npm:^7.5.4":
   version: 7.5.4
   resolution: "semver@npm:7.5.4"
   dependencies:
@@ -8732,7 +8734,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:2.6.2, tslib@npm:^2.1.0, tslib@npm:^2.3.1, tslib@npm:^2.5.0, tslib@npm:^2.6.1":
+"tslib@npm:2.6.2, tslib@npm:^2.0.0, tslib@npm:^2.1.0, tslib@npm:^2.3.1, tslib@npm:^2.5.0, tslib@npm:^2.6.1":
   version: 2.6.2
   resolution: "tslib@npm:2.6.2"
   checksum: 329ea56123005922f39642318e3d1f0f8265d1e7fcb92c633e0809521da75eeaca28d2cf96d7248229deb40e5c19adf408259f4b9640afd20d13aecc1430f3ad
@@ -8931,7 +8933,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"uuid@npm:^8.3.0, uuid@npm:^8.3.2":
+"uuid@npm:^8.3.2":
   version: 8.3.2
   resolution: "uuid@npm:8.3.2"
   bin:

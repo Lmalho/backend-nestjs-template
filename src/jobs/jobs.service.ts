@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 
 import { CreateJobDto, UpdateJobDto } from './dto/create-job.dto';
 
-import { InjectQueue } from '@nestjs/bull';
+import { InjectQueue } from '@nestjs/bullmq';
 import { JobTimes, JobPayload, Queues } from 'src/common/types/queues';
-import { Queue } from 'bull';
+import { Queue } from 'bullmq';
 import { Model } from 'mongoose';
 import { Job } from './schemas/job.schema';
 import { InjectModel } from '@nestjs/mongoose';
@@ -19,10 +19,10 @@ export class JobsService {
     return this.jobsModel.findOne({ _id: jobId });
   }
   constructor(
-    @InjectModel(Job.name)
-    private jobsModel: Model<Job>,
     @InjectQueue(Queues.JOB)
     private jobQueue: Queue<JobPayload>,
+    @InjectModel(Job.name)
+    private jobsModel: Model<Job>,
   ) {}
 
   async create(jobDto: CreateJobDto) {
@@ -31,6 +31,7 @@ export class JobsService {
     const payload: JobPayload = { jobId: job._id.toString() };
     await this.jobQueue.add(payload.jobId, payload, {
       delay: JobTimes[job.type],
+      removeOnFail: true,
     });
 
     return job;
