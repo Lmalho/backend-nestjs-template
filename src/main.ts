@@ -1,7 +1,11 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { INestApplication, Logger as NestLogger } from '@nestjs/common';
+import {
+  INestApplication,
+  Logger as NestLogger,
+  ValidationPipe,
+} from '@nestjs/common';
 import { Logger } from 'nestjs-pino';
 
 export const OpenApiOptions = {
@@ -28,6 +32,14 @@ async function bootstrapHttpServer() {
   });
 
   app.useLogger(app.get(Logger));
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      forbidUnknownValues: true,
+    }),
+  );
 
   const { title, description, version } = OpenApiOptions.info;
 

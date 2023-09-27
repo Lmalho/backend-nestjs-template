@@ -1,14 +1,17 @@
 import { Module } from '@nestjs/common';
-import { RouterModule } from '@nestjs/core';
+import { APP_FILTER, RouterModule } from '@nestjs/core';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { BullModule } from '@nestjs/bull';
-import { QueueOptions } from 'bull';
+import { BullModule } from '@nestjs/bullmq';
+import { QueueOptions } from 'bullmq';
 import { JobsModule } from './jobs/jobs.module';
 import { LoggerModule } from 'nestjs-pino';
 import { MongooseConfig } from './common/config/mongoose.config';
 import { LoggerConfig } from './common/config/logger.config';
-import { BullConfig } from './common/config/bull.config';
+import { BullConfig, BullConfigKey } from './common/config/bull.config';
+import { ApiExceptionFilter } from './common/filters/api-exception.filter';
+import { MongoExceptionFilter } from './common/filters/mongo-exception.filter';
+import { MongooseExceptionFilter } from './common/filters/mongoose-exception.filter';
 
 const routes = [
   {
@@ -26,23 +29,36 @@ const routes = [
         configService.get('logger'),
       inject: [ConfigService],
     }),
-    RouterModule.register(routes),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: async (config: ConfigService) => ({
-        uri: config.get<string>('MONGO_URI'),
+      useFactory: async (configService: ConfigService) => ({
+        uri: configService.get<string>('MONGO_URI'),
       }),
+      inject: [ConfigService],
     }),
     BullModule.forRootAsync({
       imports: [ConfigModule],
-      inject: [ConfigService],
       useFactory: async (config: ConfigService) =>
-        config.get<QueueOptions>('bull'),
+        config.get<QueueOptions>(BullConfigKey),
+      inject: [ConfigService],
     }),
+    RouterModule.register(routes),
     JobsModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_FILTER,
+      useClass: ApiExceptionFilter,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: MongoExceptionFilter,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: MongooseExceptionFilter,
+    },
+  ],
 })
 export class AppModule {}
