@@ -2,7 +2,7 @@ import { JobStatus, JobType } from 'src/jobs/types/job.types';
 
 import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { Transform, TransformFnParams } from 'class-transformer';
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty, IsEnum } from 'class-validator';
 
 export class CreateJobDto {
   @ApiProperty({
@@ -25,6 +25,7 @@ export class CreateJobDto {
     required: true,
     nullable: false,
   })
+  @IsEnum(JobType)
   type: JobType;
 }
 
@@ -37,5 +38,6 @@ export class UpdateJobDto extends PartialType(CreateJobDto) {
     required: false,
     nullable: false,
   })
+  @IsEnum(JobStatus)
   status?: JobStatus;
 }
