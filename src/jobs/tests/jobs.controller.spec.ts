@@ -1,10 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { JobsController } from '../jobs.controller';
 import { JobsService } from '../jobs.service';
-import { ResponseFindAllJobDto } from '../dto/response-job.dto';
+import { ResponseFindAllJobDto, ResponseJobDto } from '../dto/response-job.dto';
 import { generateJob } from './jobs.stub';
 import { JobStatus } from 'src/jobs/types/job.types';
 import { JobDocument } from '../schemas/job.schema';
+import { Types } from 'mongoose';
 
 describe('JobsController', () => {
   let controller: JobsController;
@@ -19,6 +20,7 @@ describe('JobsController', () => {
           useValue: {
             create: jest.fn(),
             findAll: jest.fn(),
+            findOne: jest.fn(),
           },
         },
       ],
@@ -64,6 +66,20 @@ describe('JobsController', () => {
       expect(response.data).toHaveLength(1);
       expect(response.data[0].jobs).toHaveLength(2);
       expect(service.findAll).toHaveBeenCalled();
+    });
+  });
+  describe('findOne', () => {
+    it('should return a job by id', async () => {
+      const job = {
+        id: new Types.ObjectId().toString(),
+        status: JobStatus.PENDING,
+        ...generateJob(),
+      } as JobDocument;
+
+      jest.spyOn(service, 'findOne').mockReturnValueOnce(Promise.resolve(job));
+
+      expect(controller.findOneJob(job.id)).resolves.toEqual(job);
+      expect(service.findOne).toHaveBeenCalled();
     });
   });
 });

@@ -8,19 +8,14 @@ import { Job } from '../schemas/job.schema';
 import { getModelToken } from '@nestjs/mongoose';
 import { rootMongooseTestModule } from 'src/common/tests/mongoose.test.module';
 import { JobsModule } from '../jobs.module';
-import { getQueueToken } from '@nestjs/bull';
-import { Queue } from 'bull';
+import { Queue } from 'bullmq';
+import { getQueueToken } from '@nestjs/bullmq';
 
 describe('JobsService', () => {
   let module: TestingModule;
   let service: JobsService;
   let jobModel: Model<Job>;
   let jobQueue: Queue<JobPayload>;
-
-  // class QueueMock extends EventEmitter2 {
-  //   public add = jest.fn();
-  //   public process = jest.fn();
-  // }
 
   beforeAll(async () => {
     module = await Test.createTestingModule({
@@ -49,6 +44,21 @@ describe('JobsService', () => {
       expect(savedJobs['data'][0].jobs).toHaveLength(3);
     });
   });
+
+  describe('findOne', () => {
+    it('should return a job by id', async () => {
+      const job = await new jobModel(generateJob()).save();
+
+      const jobDocument = await service.findOne(job._id.toString());
+
+      expect(jobDocument).toMatchObject(generateJobResponse());
+    });
+
+    it('should throw an error if job not found', async () => {
+      await expect(service.findOne('1234')).rejects.toThrow();
+    });
+  });
+
   describe('create', () => {
     it('should create a job', async () => {
       jest.spyOn(jobQueue, 'add').mockResolvedValueOnce(null);
@@ -63,6 +73,7 @@ describe('JobsService', () => {
         { jobId: jobDocument._id.toString() },
         {
           delay: JobTimes[jobDocument.type],
+          removeOnFail: true,
         },
       );
     });

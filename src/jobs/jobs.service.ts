@@ -15,7 +15,7 @@ import { ErrorCodes } from 'src/common/errors/codes.error';
 @Injectable()
 export class JobsService {
   @ThrowNotFoundIfNull(ErrorCodes.JOB_NOT_FOUND)
-  findOne(jobId: string) {
+  async findOne(jobId: string) {
     return this.jobsModel.findOne({ _id: jobId });
   }
   constructor(
