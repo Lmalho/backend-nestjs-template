@@ -1,38 +1,35 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Backend NestJS Template
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This project is a [NestJS](https://github.com/nestjs/nest) API template to use with a MongoDB database.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+The aim is to offer a set of solid features and architecture to quickly start a new project.
 
-## Description
+## How to install and run
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+### Prerequisites
 
-## Installation
+Install
 
-```bash
-$ yarn install
-```
+- [yarn](https://yarnpkg.com)
+- [Node.js](https://nodejs.org)
+- [NestJs](https://nestjs.com/)
+- [Docker](https://www.docker.com/)
+- [Node Version Manager](https://github.com/nvm-sh/nvm)
 
-## Running the app
+### Install and run
+
+1. Run `nvm install` to install the Node version specified in `.nvmrc`
+2. Run `yarn install` to install the dependencies.
+3. Create a `.env` file in the root (see `.env.example` for guidance)
+4. Run `docker compose up` to start the API, MongoDB, Mongo Express webclient and Redis
+   For details, see `docker-compose.yml`.
+5. Go to `localhost:3000/api` to access the Swagger API docs of the app and test
+6. Go to `localhost:8081` to access the Mongo Express webclient
+7. Run `docker-compose stop` to shut down the containers.
+
+### Develop
+
+Commands to run the app
 
 ```bash
 # development
@@ -45,29 +42,70 @@ $ yarn run start:dev
 $ yarn run start:prod
 ```
 
-## Test
+### Test
+
+Commands to run tests
 
 ```bash
 # unit tests
 $ yarn run test
 
-# e2e tests
-$ yarn run test:e2e
-
 # test coverage
 $ yarn run test:cov
 ```
 
-## Support
+## What's in the Project
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+In terms of scope there's nothing that's too complex, just a solid set of rules and practices that will allow an API to scale while providing a easy way to add new features.
 
-## Stay in touch
+## Features
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### CRUD Operations
 
-## License
+Some examples of CRUD are implemented in the [Job](src/jobs).
+It follows the core fundamentals of NestJS with a module, controller and service.
 
-Nest is [MIT licensed](LICENSE).
+### Request Validation
+
+Request validation is implemented as described in [NestJS docs](https://docs.nestjs.com/techniques/validation).
+It's a combinations of DTOs (Data Transfer Models), with class-validator and global pipes.
+
+### Configuration
+
+The API is configured through a `.env` file, see the `.env.example` for guidance.
+
+### Database
+
+For this project we're using MongoDB, with the application using Mongoose as an ODM to enforce validation, casting and business logic through schemas.
+
+### Testing
+
+The template provides unit testing for the service and the controller, using the NestJS testing tools and Jest.
+
+`TODO` e2e testing will be added in a later stage.
+
+### API Documentation
+
+API Documentation is provided in the format of OpenAPI.
+
+It's available at `/api` and served through SwaggerUI.
+
+### Logging
+
+The application logging uses Pino due to it's flexibility, features and speed.
+
+### Error Handling
+
+There are three Exception filters to manage the application errors and channel them to an API response
+Two of them are specific for the use case of MongoDB but also serve as an example for different needs that can arise.
+
+There's also a custom decorator specific to the MongoDB queries that will throw an error in the form of NotFoundException when a query to the database returns an empty object.
+
+### Queues
+
+There's a queue example for Jobs, where when a job is created it will create an entry in a queue for later processing. This uses BullMQ to manage the queues in Redis.
+
+## For the future
+
+- Add authorization/authentication to the API
+- Add an abstract Datasource layer to easily switch between databases
