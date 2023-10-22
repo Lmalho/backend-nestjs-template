@@ -7,7 +7,7 @@ COPY --chown=node:node package*.json yarn.lock ./
 FROM base as test
 RUN yarn install
 COPY --chown=node:node . .
-RUN yarn test
+RUN yarn yarn jest --ci --testLocationInResults --reporters=default
 
 FROM base as prod
 RUN yarn install
