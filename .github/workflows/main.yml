@@ -4,10 +4,22 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - '**'
 
 jobs:
-  build:
+  build-and-test:
+    name: Build and Test
     runs-on: ubuntu-latest
+    services:
+      redis:
+        image: redis:6-alpine
+        ports:
+          - 6379:6379
+    env:
+      REDIS_URL: localhost
+      REDIS_PORT: '6379'
     steps:
       -
         name: Checkout
