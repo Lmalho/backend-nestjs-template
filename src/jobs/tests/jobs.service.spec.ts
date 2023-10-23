@@ -10,6 +10,7 @@ import { rootMongooseTestModule } from 'src/common/tests/mongoose.test.module';
 import { JobsModule } from '../jobs.module';
 import { Queue } from 'bullmq';
 import { getQueueToken } from '@nestjs/bullmq';
+import { JobsProcessorService } from '../processor/jobs.processor.service';
 
 describe('JobsService', () => {
   let module: TestingModule;
@@ -20,7 +21,10 @@ describe('JobsService', () => {
   beforeAll(async () => {
     module = await Test.createTestingModule({
       imports: [rootMongooseTestModule(), JobsModule],
-    }).compile();
+    })
+      .overrideProvider(JobsProcessorService)
+      .useValue({ process: jest.fn() })
+      .compile();
 
     await module.init();
 

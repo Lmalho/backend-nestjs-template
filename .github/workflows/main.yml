@@ -20,5 +20,5 @@ jobs:
         uses: actions/checkout@v4
       - name: Set up environment
         run: docker compose -f docker-compose.workflow-test.yml up -d --wait
-      - name: The image
-        run: docker exec -it app yarn test
+      - name: Test the app
+        run: docker exec -it backend-template-app yarn test
