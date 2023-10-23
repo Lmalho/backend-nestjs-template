@@ -25,4 +25,4 @@ jobs:
       - name: Set up environment
         run: docker compose -f docker-compose.workflow-test.yml up -d --wait
       - name: Test the app
-        run: docker exec -it backend-nestjs-template-app-1 yarn test
+        run: docker exec -it backend-nestjs-template-backend-template-app-1 yarn test
