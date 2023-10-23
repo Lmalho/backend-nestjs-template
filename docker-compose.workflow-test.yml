@@ -1,0 +1,23 @@
+version: '1.0'
+
+
+services:
+  app:
+    build:
+      dockerfile: ./Dockerfile 
+    ports:
+      - 3000:3000    
+    tty: true
+    networks:
+      - testing-network
+    environment:
+      - NODE_ENV=development
+  redis:
+    image: redis:6-alpine
+    restart: unless-stopped
+    ports:
+      - 6379:6379
+    networks:
+      - testing-network
+networks:
+  testing-network:
