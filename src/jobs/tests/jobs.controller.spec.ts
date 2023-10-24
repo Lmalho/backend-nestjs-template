@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { JobsController } from '../jobs.controller';
 import { JobsService } from '../jobs.service';
-import { ResponseFindAllJobDto, ResponseJobDto } from '../dto/response-job.dto';
+import { ResponseFindAllJobDto } from '../dto/response-job.dto';
 import { generateJob } from './jobs.stub';
 import { JobStatus } from 'src/jobs/types/job.types';
 import { JobDocument } from '../schemas/job.schema';

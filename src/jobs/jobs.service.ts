@@ -14,16 +14,17 @@ import { ErrorCodes } from 'src/common/errors/codes.error';
 
 @Injectable()
 export class JobsService {
-  @ThrowNotFoundIfNull(ErrorCodes.JOB_NOT_FOUND)
-  async findOne(jobId: string) {
-    return this.jobsModel.findOne({ _id: jobId });
-  }
   constructor(
     @InjectQueue(Queues.JOB)
     private jobQueue: Queue<JobPayload>,
     @InjectModel(Job.name)
     private jobsModel: Model<Job>,
   ) {}
+
+  @ThrowNotFoundIfNull(ErrorCodes.JOB_NOT_FOUND)
+  async findOne(jobId: string) {
+    return this.jobsModel.findOne({ _id: jobId });
+  }
 
   async create(jobDto: CreateJobDto) {
     const job = await new this.jobsModel(jobDto).save();

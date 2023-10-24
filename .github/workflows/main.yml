@@ -1,24 +1,44 @@
-name: ci
+name: CI/CD Pipeline
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
 
 on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - '**'
 
 jobs:
   build:
+    name : Build Project
     runs-on: ubuntu-latest
     steps:
-      -
-        name: Checkout
-        uses: actions/checkout@v4      
-      -
-        name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      -
-        name: Build and test
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          target: test
-          load: true
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build and archive project
+        uses: ./.github/actions/build
+  tests:
+    name: Run Tests   
+    runs-on: ubuntu-latest
+    services: 
+      redis:
+        image: redis:6-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env: 
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run tests
+        uses: ./.github/actions/tests

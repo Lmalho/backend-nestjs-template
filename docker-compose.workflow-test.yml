@@ -1,0 +1,27 @@
+version: '1.0'
+
+services:
+  redis:
+    image: redis:6-alpine
+    restart: unless-stopped
+    ports:
+      - 6379:6379
+    networks:
+      - testing-network
+
+  backend-template-app:
+    build:
+      dockerfile: ./Dockerfile 
+    ports:
+      - 3000:3000 
+    depends_on:
+      - redis   
+    tty: true
+    networks:
+      - testing-network
+    environment:
+      NODE_ENV: development  
+      REDIS_URL: redis://redis_db:6379
+      REDIS_PORT: '6379'
+networks:
+  testing-network:
