@@ -13,16 +13,32 @@ on:
       - '**'
 
 jobs:
-  build-and-test:
-    name: Build and Test
-    runs-on: ubuntu-latest    
-    env:
-      REDIS_URL: localhost
-      REDIS_PORT: '6379'
+  build:
+    name : Build Project
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
-      - name: Set up environment
-        run: docker compose -f docker-compose.workflow-test.yml up -d --wait
-      - name: Test the app
-        run: docker exec -it backend-nestjs-template-backend-template-app-1 yarn test
+        uses: actions/checkout@v2
+      - name: Build and archive project
+        uses: ./.github/actions/build
+  tests:
+    name: Run Tests   
+    runs-on: ubuntu-latest
+    services: 
+      redis:
+        image: redos:6-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env: 
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run tests
+        uses: ./.github/actions/tests

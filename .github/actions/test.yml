@@ -1,0 +1,10 @@
+name: Unit Tests
+description: Runs Jest unit tests on the project
+runs:
+  using: composite
+  steps:
+  - name: Setup Node
+    uses: ./.github/actions/setup
+  - name: Run test script
+    run: yarn jest --ci --testLocationInResults
+    shell: bash

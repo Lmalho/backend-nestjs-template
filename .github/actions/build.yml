@@ -1,0 +1,15 @@
+name: Build
+description: Builds the project and archives the results as artifacts
+runs:
+  using: composite
+  steps:
+    - name: Setup Node
+      uses: ./.github/actions/setup
+    - name: Run build script
+      run: yarn run build
+      shell: bash
+    - name: Archive build artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: dist
+        path: dist
