@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     services: 
       redis:
-        image: redos:6-alpine
+        image: redis:6-alpine
         ports:
           - 6379:6379
         options: >-
